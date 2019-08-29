@@ -34,11 +34,14 @@ alias gull='git pull origin'
 alias gush='git push origin'
 alias grv='git remote -v'
 
-###############################################################################
+##############################################################################
 # bash 相关
 alias b.reload='source $HOME/.bashrc'
 alias b.rc='vim $HOME/.bashrc && source $HOME/.bashrc'
 alias b.alias='vim $DIFOSS_ENV_BASE/my_alias && source $DIFOSS_ENV_BASE/my_alias'
+
+alias z.reload='source $HOME/.zshrc'
+alias z.rc='vim $HOME/.zshrc && source $HOME/.zshrc'
 
 ###############################################################################
 # 目录相关
