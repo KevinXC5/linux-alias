@@ -1,7 +1,6 @@
 #!/bin/sh
 
 # User specific aliases and functions
-
 export LC_CTYPE="zh_CN.UTF-8"
 
 # color flag effect `grep`, `ls` and so on...
@@ -19,60 +18,22 @@ alias lll='ls --show-control-chars --color=auto -lA'
 alias grep='grep --color=$COLOR_FLAG'
 
 ###############################################################################
-# 查找相关
-# see config file
-alias seecfg='grep -P "^\s*[^#]+"'
-alias seecfgn='grep -nP "^\s*[^#]+"'
-alias seeenv='python $DIFOSS_ENV_BASE/see_env.py'
-
-alias g='grep -nrI --color=$COLOR_FLAG'
-alias gi="grep -naE '#\s*include'"
-
-alias f.c++='find . -type f -print0 | grep --color=no -zaiE ".*\.(cpp|hpp|c|h|hh|cxx|cc)$"|xargs -0 grep -aHn --color=$COLOR_FLAG'
-
-alias f.java='grep -rIaHn --include="*.java" --color=$COLOR_FLAG'
-
-# find callback
-alias f.cb='find_callback(){ str="[>\.]+\s*"$@"\s*\("; find . -type f -print0 | grep --color=no -zaiE ".*\.(cpp|hpp|c|h|hh|cxx|cc)$"|xargs -0 grep -aHnP --color=$COLOR_FLAG $str; }; find_callback'
-# find call
-alias f.call='find_call(){ str="[^a-zA-Z_]+"$@"\s*\("; find . -type f -print0 | grep --color=no -zaE ".*\.(cpp|hpp|c|h|hh|cxx|cc)$"|xargs -0 grep -aHnp --color=$COLOR_FLAG $str; }; find_call'
-
-# find in implementation files of C/C++ ( file suffix: cpp,c,cxx,cc,C )
-alias f.cpp='find . -type f -print0 | grep --color=no -zaiE ".*\.(cpp|c|cxx|cc)$" | xargs -0 grep -aHn --color=$COLOR_FLAG'
-# find in header of header files of C/C++ ( file suffix: h,hpp,hxx )
-alias f.h='find . -type f -print0 | grep --color=no -zaiE ".*\.(hpp|h|hh|hxx)$" | xargs -0 grep -aHn --color=$COLOR_FLAG'
-# find in makefiles ( file name: M/makefile, *.mk, *.mak )
-alias f.mk="find . -type f -print0 | grep --color=no -zaiE '(\.mak$)|(\.c?make$)|(\.mk$)|(/.*makefile[^//]*$)|(/cmakelists.txt$)|(BUILD$)|(WORKSPACE$)|(\.bzl$)' | xargs -0 grep -aHn --color=\$COLOR_FLAG"
-
-#---------------------------
-alias f.syslog="find /var/log -type f -name 'syslog' | xargs grep -aH --color=\$COLOR_FLAG"
-#alias cl.syslog="cp /var/log/syslog /var/log/syslog-`date +%Y-%m-%d`.bak; cat /dev/null > /var/log/syslog"
-alias f.log='find . -type f -name "*.log" -print0 | xargs -0 grep -aHn --color=$COLOR_FLAG'
-alias f.ini='find . -type f -print0 | grep --color=no -zaiE ".*\.(ini|cfg|conf|xml|json)$" | xargs -0 grep -aHn --color=$COLOR_FLAG'
-
-alias f.php='find . -type f -name "*.php" -print0 | xargs -0 grep -aHn --color=$COLOR_FLAG'
-alias f.sql='find . -type f -name "*.sql" -print0 | xargs -0 grep -aHn --color=$COLOR_FLAG'
-alias f.md='find . -type f -name "*.md" -print0 | xargs -0 grep -aHn --color=$COLOR_FLAG'
-alias f.pb='find . -type f -print0 | grep --color=no -zaiE "(\.proto$)" | xargs -0 grep -aHn --color=$COLOR_FLAG'
-
-alias f.js='find . -type f -print0 | grep --color=no -zaiE ".*\.(js|ts)$" | xargs -0 grep -aHn --color=$COLOR_FLAG'
-
-alias f.go='find . -type f -print0 | grep --color=no -zaiE ".*\.(go)$" | xargs -0 grep -aHn --color=$COLOR_FLAG'
-alias f.gosrc='find . -path "./vendor/*" -prune -o -name "*.go" -type f -print0 | xargs -0 grep -aHn --color=$COLOR_FLAG'
-alias f.lua='find . -type f -print0 | grep --color=no -zaiE ".*\.(lua)$" | xargs -0 grep -aHn --color=$COLOR_FLAG'
-alias f.thrift='find . -type f -name "*.thrift" -print0 | xargs -0 grep -aHn --color=$COLOR_FLAG'
-
-alias f.bazel='find -type f -name "BUILD*" -print0 | xargs -0 grep -aHn --color=$COLOR_FLAG'
-alias bn='find -type f -name BUILD -print0 | xargs -0 grep -aHn --color=$COLOR_FLAG name| grep'
-
-###############################################################################
 # Git
 alias gl="git log --color --graph --pretty=format:'%C(bold white)%h%Creset -%C(bold green)%d%Creset %s %C(bold green)(%cr)%Creset %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
 alias gs="git status"
 alias gb='git branch -vva'
 alias gc='git checkout'
-alias gitlog=gl
 alias git.unset-credential='git config --system --unset credential.help'
+alias git.store-credential='git config --global credential.help store'
+alias ga='git add '
+alias gcm='git commit -m'
+alias gdiff='git diff'
+alias gdi='git di'
+alias gss='git status -s'
+alias gull='git pull origin'
+alias gush='git push origin'
+alias grv='git remote -v'
+
 ###############################################################################
 # bash 相关
 alias b.reload='source $HOME/.bashrc'
