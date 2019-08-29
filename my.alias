@@ -1,73 +1,5 @@
 #!/bin/sh
 
-###############################################################################
-export SYSTEM_TYPE=`python -u -c 'import platform;print(platform.system())'`
-
-export PATH=$PATH:$DIFOSS_ENV_BASE/my_cmd
-
-
-if [ -z `command -v realpath` ]; then
-    realpath () {
-        f=$@;
-        if [ -d "$f" ] ; then
-            base="";
-            dir="$f";
-        else
-            base="/$(basename "$f")";
-            dir=$(dirname "$f");
-        fi
-        dir=$(cd "$dir" && /bin/pwd);
-        echo "$dir$base"
-    }
-fi
-
-if [ "$SYSTEM_TYPE" == "Windows" ] ; then
-
-    # Config Cygwin Here ------------------------------------
-    export CYGPATH=cygpath.exe
-
-    alias p='powershell -command "ps | head -3 ; ps |grep $*" ' # $* $@
-
-    # Set alias for *.bat of `Git/cmd` diretory
-    function e() {
-        if [ -z $1 ]; then
-            explorer `cygpath -w $PWD`
-        else
-            cygpath -w "`realpath $1`" | awk '{printf "explorer \"%s\"", $0}' | sh
-        fi
-    }
-
-elif [ "$SYSTEM_TYPE" == "Linux" ] ; then
-    export CYGPATH=echo
-    export IP_ETH0=`ip -f inet address show  | grep -A 1 -E "[[:digit:]]+\: eth0:" | tail -1 | awk -F"[ //]+" '{print $3}'`
-    export ADDR_1st=`cat /proc/net/dev | awk '{i++; if(i>2){print $1}}'|grep -v lo| awk -F ':' '{print $1}'| head -1`
-    export IP_1st=`ip -f inet address show | grep -A 1 -E "[[:digit:]]+\: $ADDR_1st:" | tail -1 | awk -F"[ //]+" '{print $3}'`
-
-    export PS1='\e[36;2m<\t>\e[0m[\e[33;2m\u@\e[32;2m$IP_1st\e[0m] \e[35;2m\w\e[0m\e[36m$(__git_ps1 " (%s)")\e[0m\n$ '
-    PROMPT_COMMAND='export PS1="`echo $PS1` "'
-
-    ## old version of 'p'
-    #alias p='echo -e "PID\tPPID\tCMD"; ps -eo "%P %p %c %a" -u $LOGNAME|egrep -vE "[[:space:]]*[[:digit:]]+[[:space:]]+[[:digit:]]+[[:space:]]+grep"|grep'
-
-    alias p='ps -eo "%U %p %P %x %c %a"|head -1; ps -eo "%U %p %P %x %c %a"|egrep -vE "[[:space:]]*[[:digit:]]+[[:space:]]+[[:digit:]]+[[:space:]]+grep"|grep'
-else
-    echo Unknown System Type !
-fi
-
-# if [ "$OSTYPE" == $"linux-gnu" ]; then          ######### linux-gnu system
-#    alias shutdown='echo'  # 防止错误关机
-# fi
-
-if [ "$TERM" == $"cygwin" ] && [ "$OSTYPE" == $"cygwin" ]; then  ##### cygwin, but not the original terminal
-    export PS1="\e[36;2m<\t> \e[32;2m[\u@\h] \e[35;2m\w\e[0m\n$ "
-fi
-
-if [ "$OSTYPE" == $"cygwin" ]; then              ##### cygwin, no matter it is the original terminal
-    # quik open explorer in $1 directory
-    alias e='_e() { if [ $# -ne 1 ]; then explorer .; else explorer `cygpath -d "$*"`; fi }; _e'
-fi
-###############################################################################
-
 # User specific aliases and functions
 
 export LC_CTYPE="zh_CN.UTF-8"
@@ -85,16 +17,6 @@ alias l='ls --show-control-chars --color=auto -Ah'
 alias ll='ls --show-control-chars --color=auto -lAh'
 alias lll='ls --show-control-chars --color=auto -lA'
 alias grep='grep --color=$COLOR_FLAG'
-
-# Let `grep` highlight
-export GREP_COLOR="10;33"
-
-#### short command
-#alias r='perl $DIFOSS_ENV_BASE/run.pl'
-
-# short for 'Grep Include'
-alias check='valgrind --tool=memcheck --track-fds=yes --leak-check=full --show-leak-kinds=definite'
-ulimit -c unlimited
 
 ###############################################################################
 # 查找相关
@@ -143,62 +65,6 @@ alias f.thrift='find . -type f -name "*.thrift" -print0 | xargs -0 grep -aHn --c
 alias f.bazel='find -type f -name "BUILD*" -print0 | xargs -0 grep -aHn --color=$COLOR_FLAG'
 alias bn='find -type f -name BUILD -print0 | xargs -0 grep -aHn --color=$COLOR_FLAG name| grep'
 
-# Set default `f` for MOST quickly find
-alias f 2<&- 1<&-
-if [ $? -eq 1 ]; then
-    alias f=f.c++
-fi
-
-#---------------------------
-## <need other files>
-# read symbol in *.*o, but just 1 depth. (transfer 'low-level name' into 'C++ readable name' by <find_symbol_in_so.pl>)
-alias f.symbol='perl $DIFOSS_ENV_BASE/find_symbol_in_so.pl'
-alias f.so='find . -type f -print0 | grep --color=no -zaiE ".*\.(so|o|lo|a|ar)$" |xargs -0 nm -CA 2>/dev/null | grep -a --color=$COLOR_FLAG'
-# Provider: https://github.com/zeroleo12345
-alias ff='python $DIFOSS_ENV_BASE/ff.py'
-
-#---------------------------
-# find py
-alias pyf='find -type f -name "*.py" -print0 |xargs -0 grep -aHn --color=$COLOR_FLAG'
-alias f.py='pyf'
-# find function defination in py
-alias pyfn='find -type f -name "*.py" -print0 |xargs -0 grep -anE "^\s*def\s+" |grep -0 --color=$COLOR_FLAG'
-# find function calling in py
-alias pyfc='find -type f -name "*.py" -print0 |xargs -0 grep -anvE "^\s*def\s+" |grep -0 --color=$COLOR_FLAG'
-alias pyc='find -type f -name "*.py" -print0 |xargs -0 grep -anE "^\s*class\s+" |grep -0 --color=$COLOR_FLAG'
-
-alias pyhelp='python $DIFOSS_ENV_BASE/py.help.py'
-alias pydir='python $DIFOSS_ENV_BASE/py.dir.py'
-alias pyv='python -c "import sys; print sys.version"'
-alias cd.py='cd /media/sf_software_develop_/python; alias f=f.py'
-
-alias pd=pydir
-alias ph=pyhelp
-
-###############################################################################
-# 编译相关
-alias m="find -maxdepth 1 -type f | grep --color=no -iE '(.*\.mak$)|(.*\.mk$)|(makefile)$' |awk -F / '{print $2}'| xargs -I {} make -f $1 {}"
-alias mc='m clean'
-alias mi='m install'
-alias c='cmake .'
-
-# find rfc*.txt
-alias f.rfc='find -type f -name "rfc*.txt" -print0 |xargs -0 grep -an --color=$COLOR_FLAG'
-
-###############################################################################
-# 爬虫相关
-## pwebs: Pick WEB, grep by Single quotes
-alias pwebs="awk -F \"[']\" '{i=1;while(i<NF) {printf(\"%s\n\", \$i);i++}}'"
-## pwebd: Pick WEB, grep by Double quotes
-alias pwebd="awk -F'\"' '{i=1;while(i<NF) {printf(\"%s\n\", \$i);i++}}'"
-## geturl是pwebs、pwebd的混合版，使用 \047 代替单引号。后面可以再跟过滤用关键字（todo: 或者干脆紧跟URL规则的grep）
-alias geturl="awk -F'[\"\047]' '{i=1;while(i<NF) {printf(\"%s\n\", \$i);i++}}'"
-# 下载全站网页
-alias getweb='wget -c -t 3 -r -p -k -E -A=zip,jpg,jpeg,png,gif,html,css'
-# 文件的减法
-alias filesub='python $DIFOSS_ENV_BASE/sub_file.py'
-
-
 ###############################################################################
 # Git
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset - %Cgreen(%cd)%Creset %C(yellow)%d%Creset %C(yellow reverse)%cn%Creset %s' --abbrev-commit --date=format:%c"
@@ -221,25 +87,4 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias -- -='cd -'
-# cd save : save where i am
-alias cds='echo "`pwd`" > ~/.cdsave'
-# cd back
-alias cdb='cd "`cat ~/.cdsave`"'
 
-
-# entry last logout directory when login
-#if [ -f ~/.cd-last-logout ];then
-#    cd "`cat ~/.cd-last-logout`"
-#fi
-
-# exit and save lastest directory when logout
-alias exit='echo $PWD > ~/.cd-last-logout; exit'
-
-###############################################################################
-## 函数类
-
-# 创建一个目录并跳转到
-# make a dir and cd into it
-mkcd(){
-    mkdir -pv "$@" && cd "$@"
-}
