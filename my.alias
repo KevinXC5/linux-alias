@@ -11,11 +11,10 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias vi='vim'
-alias ls="ls --show-control-chars --color=auto -A"
-alias l='ls --show-control-chars --color=auto -Ah'
-alias ll='ls --show-control-chars --color=auto -lAh'
-alias lll='ls --show-control-chars --color=auto -lA'
-alias grep='grep --color=$COLOR_FLAG'
+alias ls="ls -A"
+alias l='ls -Ah'
+alias ll='ls -lAh'
+alias lll='ls -lA'
 
 ###############################################################################
 # Git
