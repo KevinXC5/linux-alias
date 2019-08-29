@@ -67,7 +67,7 @@ alias bn='find -type f -name BUILD -print0 | xargs -0 grep -aHn --color=$COLOR_F
 
 ###############################################################################
 # Git
-alias gl="git log --graph --pretty=format:'%Cred%h%Creset - %Cgreen(%cd)%Creset %C(yellow)%d%Creset %C(yellow reverse)%cn%Creset %s' --abbrev-commit --date=format:%c"
+alias gl="git log --color --graph --pretty=format:'%C(bold white)%h%Creset -%C(bold green)%d%Creset %s %C(bold green)(%cr)%Creset %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
 alias gs="git status"
 alias gb='git branch -vva'
 alias gc='git checkout'
