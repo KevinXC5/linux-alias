@@ -11,10 +11,10 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias vi='vim'
-alias ls="ls -A"
-alias l='ls -Ah'
-alias ll='ls -lAh'
-alias lll='ls -lA'
+alias ls="ls -A --color=$COLOR_FLAG"
+alias l='ls -Ah --color=$COLOR_FLAG'
+alias ll='ls -lAh --color=$COLOR_FLAG'
+alias lll='ls -lA --color=$COLOR_FLAG'
 
 ###############################################################################
 # Git
@@ -39,6 +39,14 @@ alias dkps="docker ps"
 alias dkpsa="docker ps -a"
 alias dkim="docker images"
 alias dkins="docker inspect"
+
+###############################################################################
+# Systemd
+alias scat="systemctl status "
+alias srun="systemctl start "
+alias sstop="systemctl stop "
+alias senable="systemctl enable "
+alias sdis="systemctl disable  "
 
 ##############################################################################
 # bash 相关
