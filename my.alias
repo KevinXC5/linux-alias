@@ -33,6 +33,13 @@ alias gull='git pull origin'
 alias gush='git push origin'
 alias grv='git remote -v'
 
+###############################################################################
+# Docker
+alias dkps="docker ps"
+alias dkpsa="docker ps -a"
+alias dkim="docker images"
+alias dkins="docker inspect"
+
 ##############################################################################
 # bash 相关
 alias b.reload='source $HOME/.bashrc'
