@@ -11,10 +11,10 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias vi='vim'
-alias ls="ls -A --color=$COLOR_FLAG"
-alias l='ls -Ah --color=$COLOR_FLAG'
-alias ll='ls -lAh --color=$COLOR_FLAG'
-alias lll='ls -lA --color=$COLOR_FLAG'
+alias ls="ls -A"
+alias l='ls -Ah'
+alias ll='ls -lAh'
+alias lll='ls -lA'
 
 ###############################################################################
 # Git
@@ -35,10 +35,16 @@ alias grv='git remote -v'
 
 ###############################################################################
 # Docker
+alias dk="docker"
 alias dkps="docker ps"
 alias dkpsa="docker ps -a"
 alias dkim="docker images"
 alias dkins="docker inspect"
+
+###############################################################################
+# K8s
+alias krew="kubectl krew"
+alias ktl="kubectl"
 
 ###############################################################################
 # Systemd
@@ -65,4 +71,7 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias -- -='cd -'
+
+#fzf
+alias fzfbat="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'"
 
